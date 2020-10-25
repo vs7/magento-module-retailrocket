@@ -1,0 +1,12 @@
+<?php
+$email = false;
+if (Mage::app()->isInstalled() && Mage::getSingleton('customer/session')->isLoggedIn()) {
+    $email = Mage::getSingleton('customer/session')->getCustomer()->getEmail();
+}
+if (empty($email)) return;
+?>
+<script type="text/javascript">
+(window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function () {
+    rrApi.setEmail('<?php echo $email ;?>');
+});
+</script>

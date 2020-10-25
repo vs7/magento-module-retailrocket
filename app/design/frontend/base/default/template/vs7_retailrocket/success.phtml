@@ -1,0 +1,40 @@
+<?php
+try {
+    $lastOrderId = Mage::registry('controller')
+        ->getAction()
+        ->getOnepage()
+        ->getCheckout()
+        ->getLastOrderId();
+    $orderObj = Mage::getModel('sales/order')->load($lastOrderId);
+    $orderItems = $orderObj->getAllItems();
+    $numItems = count($orderItems);
+    $i = 0;
+} catch (Exception $e) {
+    Mage::logException($e);
+}
+
+if (empty($orderItems)) {
+    return;
+}
+?>
+<script type="text/javascript">
+(window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function () {
+    try {
+        rrApi.order({
+            transaction: <?php echo $lastOrderId; ?>,
+            items: [
+                <?php foreach ($orderItems as $item) : ?>
+                {
+                    id: <?php echo $item->getProductId(); ?>,
+                    qnt: <?php echo $item->getQtyOrdered(); ?>,
+                    price: <?php echo $item->getPrice(); ?>
+                }
+                <?php if (++$i !== $numItems) { ?>, <?php } ?>
+                <?php endforeach; ?>
+            ]
+        });
+        rrApi.setEmail('<?php echo $orderObj->getCustomerEmail(); ?>');
+    } catch (e) {
+    }
+});
+</script>

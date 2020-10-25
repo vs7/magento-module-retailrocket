@@ -1,0 +1,5 @@
+<script type="text/javascript">
+(window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+    try{ rrApi.view(<?php echo Mage::registry('current_product')->getId() ?>); } catch(e) {}
+});
+</script>

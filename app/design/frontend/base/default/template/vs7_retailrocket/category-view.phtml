@@ -1,0 +1,5 @@
+<script type="text/javascript">
+(window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+    try { rrApi.categoryView(<?php echo Mage::registry('current_category')->getId()?>); } catch(e) {}
+});
+</script>
